@@ -20,8 +20,7 @@ mp_drawing = mp.solutions.drawing_utils
 mp_holistic = mp.solutions.holistic
 
 model = load_model('model.h5')
-CATEGORIES = ['', '']
-
+CAT = ['berdiri', 'mengetuk pintu','jongkok','','']
 
 firebase = pyrebase.initialize_app(firebaseConfig)
 storage = firebase.storage()
@@ -34,14 +33,16 @@ print(height, width)
 
 dsize = (width, height)
 
-myActivity = ""
-myStatus = ""
-myImage = "https://firebasestorage.googleapis.com/v0/b/antithiefdb.appspot.com/o/images%2Fexample.jpg?alt=media&token=66dbe5bc-4cac-4c30-a97c-986a29bdbdb5"
-i = 0
+arrayAct        = [""]*5
+currentAct      = ""
+currentStat     = ""
+cond            = "true"
+urlImg          = "https://firebasestorage.googleapis.com/v0/b/antithiefdb.appspot.com/o/images%2Fexample.jpg?alt=media&token=66dbe5bc-4cac-4c30-a97c-986a29bdbdb5"
 
 cam = cv2.VideoCapture(0)
-i = 0
+
 with mp_holistic.Holistic(min_detection_confidence=0.5, min_tracking_confidence=0.5) as holistic:
+    i = 0
     while True:
         ret, img = cam.read()
         image = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
@@ -63,28 +64,54 @@ with mp_holistic.Holistic(min_detection_confidence=0.5, min_tracking_confidence=
 
             prediction = model.predict(crop_img)
             index = numpy.argmax(prediction)
-            myActivity = CATEGORIES[index]
-            print(myActivity)
+            currentAct = CAT[index]
+            print(currentAct)
         except:
             pass
 
-        if myActivity == "berdiri" or myActivity == "mengetuk pintu" or myActivity == "berjalan":
-            myStatus = "aman"
+        i = i + 1
+        if i == 4:
+            i = 0
+
+        arrayAct[i] = currentAct
+
+        if arrayAct[0] == CAT[0] and arrayAct[1] == CAT[0] and arrayAct[2] == CAT[0] and arrayAct[3] == CAT[0]:
+            currentStat = "aman"
+        if arrayAct[0] == CAT[1] and arrayAct[1] == CAT[0] and arrayAct[2] == CAT[0] and arrayAct[3] == CAT[0]:
+            currentStat = "aman"
+        if arrayAct[0] == CAT[1] and arrayAct[1] == CAT[1] and arrayAct[2] == CAT[0] and arrayAct[3] == CAT[0]:
+            currentStat = "aman"
+        if arrayAct[0] == CAT[1] and arrayAct[1] == CAT[1] and arrayAct[2] == CAT[1] and arrayAct[3] == CAT[0]:
+            currentStat = "aman"
+        if arrayAct[0] == CAT[1] and arrayAct[1] == CAT[1] and arrayAct[2] == CAT[1] and arrayAct[3] == CAT[0]:
+            currentStat = "aman"
+        if arrayAct[0] == CAT[1] and arrayAct[1] == CAT[1] and arrayAct[2] == CAT[1] and arrayAct[3] == CAT[1]:
+            currentStat = "aman"
+            
+        if arrayAct[0] == CAT[4] and arrayAct[1] == CAT[4] and arrayAct[2] == CAT[4] and arrayAct[3] == CAT[4]:
+            currentStat = "tidak aman"
+        if arrayAct[0] == CAT[5] and arrayAct[1] == CAT[4] and arrayAct[2] == CAT[4] and arrayAct[3] == CAT[4]:
+            currentStat = "tidak aman"
+        if arrayAct[0] == CAT[5] and arrayAct[1] == CAT[5] and arrayAct[2] == CAT[4] and arrayAct[3] == CAT[4]:
+            currentStat = "tidak aman"
+        if arrayAct[0] == CAT[5] and arrayAct[1] == CAT[5] and arrayAct[2] == CAT[5] and arrayAct[3] == CAT[4]:
+            currentStat = "tidak aman"
+        if arrayAct[0] == CAT[5] and arrayAct[1] == CAT[5] and arrayAct[2] == CAT[5] and arrayAct[3] == CAT[5]:
+            currentStat = "tidak aman"
+        if arrayAct[0] == CAT[5] and arrayAct[1] == CAT[5] and arrayAct[2] == CAT[5] and arrayAct[3] == CAT[5]:
+            currentStat = "tidak aman"
+            
+        if currentStat == "tidak aman":
+            cond = "active"
         else:
-            myStatus = "tidak aman"
+            cond = "passive"
 
         data = {
-            "activity": myActivity,
-            "status": myStatus,
-            "image": myImage
+            "pushnotif": cond,
+            "activity": currentAct,
+            "status": currentStat,
+            "image": urlImg
         }
-
-        i = i + 1
-        if i == 2:
-            i = 0
-            myImage = "https://firebasestorage.googleapis.com/v0/b/antithiefdb.appspot.com/o/images%2Fexample.jpg?alt=media&token=66dbe5bc-4cac-4c30-a97c-986a29bdbdb51"
-        else:
-            myImage = "https://firebasestorage.googleapis.com/v0/b/antithiefdb.appspot.com/o/images%2Fexample.jpg?alt=media&token=66dbe5bc-4cac-4c30-a97c-986a29bdbdb5"
 
         img2 = cv2.resize(img, dsize)
 
