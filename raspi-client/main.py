@@ -36,7 +36,7 @@ dsize = (width, height)
 arrayAct        = [""]*5
 currentAct      = ""
 currentStat     = ""
-cond            = "true"
+cond            = "passive"
 urlImg          = "https://firebasestorage.googleapis.com/v0/b/antithiefdb.appspot.com/o/images%2Fexample.jpg?alt=media&token=66dbe5bc-4cac-4c30-a97c-986a29bdbdb5"
 
 cam = cv2.VideoCapture(0)
