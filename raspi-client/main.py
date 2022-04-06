@@ -87,7 +87,7 @@ with mp_holistic.Holistic(min_detection_confidence=0.5, min_tracking_confidence=
             currentStat = "aman"
         if arrayAct[0] == CAT[1] and arrayAct[1] == CAT[1] and arrayAct[2] == CAT[1] and arrayAct[3] == CAT[1]:
             currentStat = "aman"
-            
+
         if arrayAct[0] == CAT[4] and arrayAct[1] == CAT[4] and arrayAct[2] == CAT[4] and arrayAct[3] == CAT[4]:
             currentStat = "tidak aman"
         if arrayAct[0] == CAT[5] and arrayAct[1] == CAT[4] and arrayAct[2] == CAT[4] and arrayAct[3] == CAT[4]:
@@ -100,7 +100,7 @@ with mp_holistic.Holistic(min_detection_confidence=0.5, min_tracking_confidence=
             currentStat = "tidak aman"
         if arrayAct[0] == CAT[5] and arrayAct[1] == CAT[5] and arrayAct[2] == CAT[5] and arrayAct[3] == CAT[5]:
             currentStat = "tidak aman"
-            
+
         if currentStat == "tidak aman":
             cond = "active"
         else:
@@ -124,7 +124,7 @@ with mp_holistic.Holistic(min_detection_confidence=0.5, min_tracking_confidence=
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
 
-        time.sleep(1)
+        time.sleep(0.2)
 
 cam.release()
 cv2.destroyAllWindows()
