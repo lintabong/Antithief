@@ -20,7 +20,7 @@ mp_drawing = mp.solutions.drawing_utils
 mp_holistic = mp.solutions.holistic
 
 model = load_model('model.h5')
-CAT = ['berdiri', 'mengetuk pintu','jongkok','','']
+CAT = ['berdiri', 'jongkok','membuka pintu','membungkuk','mengetuk pintu','tiarap']
 
 firebase = pyrebase.initialize_app(firebaseConfig)
 storage = firebase.storage()
@@ -124,7 +124,7 @@ with mp_holistic.Holistic(min_detection_confidence=0.5, min_tracking_confidence=
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
 
-        time.sleep(0.2)
+        time.sleep(1)
 
 cam.release()
 cv2.destroyAllWindows()
